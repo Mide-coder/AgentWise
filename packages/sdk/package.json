@@ -1,0 +1,29 @@
+{
+  "name": "@agentwise/sdk",
+  "version": "0.1.0",
+  "description": "AgentWise core SDK – Yellow Nitrolite state channels + XRPL settlement",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "xrpl": "^3.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8",
+    "vitest": "^1.6.0",
+    "typescript": "^5.4.5"
+  }
+}

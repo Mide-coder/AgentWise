@@ -1,0 +1,11 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - "@next/swc-win32-x64-msvc"
+allowBuilds:
+  esbuild: true
+  sharp: false
