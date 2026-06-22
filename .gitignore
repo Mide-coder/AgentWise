@@ -17,3 +17,5 @@ coverage
 agent/.env
 agent/.goal_id.txt
 pnpm-build-config.json
+*.db
+*.db-*

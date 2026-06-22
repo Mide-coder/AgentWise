@@ -6,6 +6,7 @@ import { channelsRouter } from "./routes/channels.js";
 import { hooksRouter } from "./routes/hooks.js";
 import { agentRouter } from "./routes/agent.js";
 import { errorHandler } from "./middleware/error-handler.js";
+import { closeDb, initializeDb } from "@agentwise/sdk";
 
 const app: Express = express();
 const PORT = process.env.PORT ?? 4000;
@@ -28,9 +29,27 @@ app.use("/api/agent", agentRouter);
 // ── Error handler ─────────────────────────────────────────────────────────────
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`AgentWise API running on http://localhost:${PORT}`);
-  console.log(`Network: ${process.env.NEXT_PUBLIC_NETWORK ?? "testnet"}`);
-});
+async function start(): Promise<void> {
+  try {
+    await initializeDb();
+    app.listen(PORT, () => {
+      console.log(`AgentWise API running on http://localhost:${PORT}`);
+      console.log(`Network: ${process.env.NEXT_PUBLIC_NETWORK ?? "testnet"}`);
+    });
+  } catch (err) {
+    console.error("Failed to initialize database:", err);
+    process.exit(1);
+  }
+}
+
+function shutdown(): void {
+  closeDb();
+  process.exit(0);
+}
+
+process.once("SIGINT", shutdown);
+process.once("SIGTERM", shutdown);
+
+start();
 
 export default app;

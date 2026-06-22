@@ -5,6 +5,7 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - sharp
+  - better-sqlite3
   - "@next/swc-win32-x64-msvc"
 allowBuilds:
   esbuild: true

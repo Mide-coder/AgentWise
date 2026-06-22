@@ -18,12 +18,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "xrpl": "^3.0.0",
-    "uuid": "^9.0.1"
+    "sql.js": "^1.14.1",
+    "uuid": "^9.0.1",
+    "xrpl": "^3.0.0"
   },
   "devDependencies": {
+    "@types/sql.js": "^1.4.11",
     "@types/uuid": "^9.0.8",
-    "vitest": "^1.6.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   }
 }

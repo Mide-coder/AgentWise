@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { z } from "zod";
 import { goalManager } from "../lib/goal-manager-singleton.js";
+import { AgentWiseError } from "@agentwise/sdk";
 
 export const goalsRouter: IRouter = Router();
 
@@ -42,6 +43,9 @@ goalsRouter.post("/", async (req, res, next) => {
 goalsRouter.get("/:id", (req, res, next) => {
   try {
     const goal = goalManager.getGoal(req.params.id);
+    if (!goal) {
+      throw new AgentWiseError(`Goal ${req.params.id} not found`, "GOAL_NOT_FOUND");
+    }
     res.json(goal);
   } catch (err) {
     next(err);
@@ -53,6 +57,9 @@ goalsRouter.get("/:id", (req, res, next) => {
 goalsRouter.get("/:id/progress", (req, res, next) => {
   try {
     const progress = goalManager.getGoalProgress(req.params.id);
+    if (!progress) {
+      throw new AgentWiseError(`Goal ${req.params.id} not found`, "GOAL_NOT_FOUND");
+    }
     res.json(progress);
   } catch (err) {
     next(err);
@@ -64,6 +71,9 @@ goalsRouter.get("/:id/progress", (req, res, next) => {
 goalsRouter.get("/:id/deposits", (req, res, next) => {
   try {
     const history = goalManager.getDepositHistory(req.params.id);
+    if (!history) {
+      throw new AgentWiseError(`Goal ${req.params.id} not found`, "GOAL_NOT_FOUND");
+    }
     res.json(history);
   } catch (err) {
     next(err);
@@ -76,6 +86,9 @@ goalsRouter.post("/:id/deposit-rule", (req, res, next) => {
   try {
     const body = depositRuleSchema.parse(req.body);
     const goal = goalManager.setDepositRule(req.params.id, body);
+    if (!goal) {
+      throw new AgentWiseError(`Goal ${req.params.id} not found`, "GOAL_NOT_FOUND");
+    }
     res.json(goal);
   } catch (err) {
     next(err);

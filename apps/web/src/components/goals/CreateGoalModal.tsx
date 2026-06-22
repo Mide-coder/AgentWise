@@ -7,12 +7,12 @@ import { X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const GOAL_PRESETS = [
-  { name: "Emergency Fund", emoji: "🛡️" },
-  { name: "Travel", emoji: "✈️" },
-  { name: "Education", emoji: "📚" },
-  { name: "Business Capital", emoji: "💼" },
-  { name: "Rent", emoji: "🏠" },
-  { name: "Custom", emoji: "✏️" },
+  { name: "Emergency Fund", },
+  { name: "Travel",  },
+  { name: "Education", },
+  { name: "Business Capital", },
+  { name: "Rent",  },
+  { name: "Custom", },
 ];
 
 interface CreateGoalModalProps {
@@ -138,8 +138,7 @@ export function CreateGoalModal({ onClose }: CreateGoalModalProps) {
                         : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
-                    <span className="block text-lg mb-1">{preset.emoji}</span>
-                    {preset.name}
+                    
                   </button>
                 ))}
               </div>

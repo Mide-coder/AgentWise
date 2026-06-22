@@ -19,6 +19,7 @@ export { YellowChannelManager } from "./yellow/channel.js";
 
 // Goal Engine
 export { GoalManager } from "./goal-engine/goal-manager.js";
+export { closeDb, initializeDb } from "./db.js";
 
 // Config helpers
 export function createTestnetConfig(yellowApiKey: string) {

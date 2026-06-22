@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ConnectWalletButton } from "@/components/wallet/ConnectWalletButton";
 import { clsx } from "clsx";
@@ -18,9 +19,14 @@ export function Navbar() {
       <div className="container mx-auto max-w-5xl px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <span className="w-8 h-8 rounded-xl bg-brand-600 flex items-center justify-center text-white text-sm font-bold">
-            AW
-          </span>
+          <Image
+            src="/icon.svg"
+            alt="AgentWise"
+            width={36}
+            height={36}
+            className="rounded-xl"
+            priority
+          />
           <span className="text-surface-900">AgentWise</span>
         </Link>
 

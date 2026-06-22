@@ -2,17 +2,22 @@
  * End-to-end tests for the GoalManager.
  * Covers: goal creation → recurring off-chain deposits → net settlement with Hook rules.
  */
-import { describe, it, expect, beforeEach } from "vitest";
-import { GoalManager, createTestnetConfig } from "../index.js";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { GoalManager, createTestnetConfig, initializeDb, closeDb } from "../index.js";
 
 const config = createTestnetConfig("test-api-key");
 
-// Fresh GoalManager instance per test to avoid state bleed
-// (In real code the in-memory store is module-level; for tests we work around it)
 let manager: GoalManager;
 
-beforeEach(() => {
+beforeEach(async () => {
+  // Use an in-memory DB for each test (no file on disk)
+  process.env.DATABASE_PATH = ":memory:";
+  await initializeDb();
   manager = new GoalManager(config);
+});
+
+afterEach(() => {
+  closeDb();
 });
 
 // ── Goal Creation ─────────────────────────────────────────────────────────────
@@ -66,8 +71,9 @@ describe("State channel", () => {
     });
 
     const updated = await manager.openChannel(goal.id, "rTestUser123", 50);
-    expect(updated.channelId).toBeTruthy();
-    expect(updated.channelId).toMatch(/^ch_/);
+    expect(updated).not.toBeNull();
+    expect(updated!.channelId).toBeTruthy();
+    expect(updated!.channelId).toMatch(/^ch_/);
   });
 
   it("rejects opening a second channel on the same goal", async () => {
@@ -95,16 +101,18 @@ describe("Recurring deposits", () => {
     });
     await manager.openChannel(goal.id, "rTestUser123", 100);
 
-    manager.setDepositRule(goal.id, { amount: 1.5, frequency: "daily", active: true });
+    const ruleSet = manager.setDepositRule(goal.id, { amount: 1.5, frequency: "daily", active: true });
+    expect(ruleSet).not.toBeNull();
 
     const record = await manager.executeDeposit(goal.id);
-
-    expect(record.amount).toBe(1.5);
-    expect(record.type).toBe("off_chain");
-    expect(record.channelId).toBeDefined();
+    expect(record).not.toBeNull();
+    expect(record!.amount).toBe(1.5);
+    expect(record!.type).toBe("off_chain");
+    expect(record!.channelId).toBeDefined();
 
     const updated = manager.getGoal(goal.id);
-    expect(updated.savedAmount).toBe(1.5);
+    expect(updated).not.toBeNull();
+    expect(updated!.savedAmount).toBe(1.5);
   });
 
   it("rejects a deposit amount below minimum", () => {
@@ -130,10 +138,12 @@ describe("Recurring deposits", () => {
     await manager.executeDeposit(goal.id);
 
     const updated = manager.getGoal(goal.id);
-    expect(updated.savedAmount).toBeCloseTo(15, 2);
+    expect(updated).not.toBeNull();
+    expect(updated!.savedAmount).toBeCloseTo(15, 2);
 
     const history = manager.getDepositHistory(goal.id);
-    expect(history).toHaveLength(3);
+    expect(history).not.toBeNull();
+    expect(history!).toHaveLength(3);
   });
 });
 
@@ -152,14 +162,15 @@ describe("Net settlement", () => {
     await manager.executeDeposit(goal.id);
 
     const settlement = await manager.settleGoal(goal.id);
-
-    expect(settlement.type).toBe("settlement");
-    expect(settlement.txHash).toBeTruthy();
-    expect(settlement.amount).toBeGreaterThan(0);
+    expect(settlement).not.toBeNull();
+    expect(settlement!.type).toBe("settlement");
+    expect(settlement!.txHash).toBeTruthy();
+    expect(settlement!.amount).toBeGreaterThan(0);
 
     // Channel should be cleared after settlement
     const updatedGoal = manager.getGoal(goal.id);
-    expect(updatedGoal.channelId).toBeUndefined();
+    expect(updatedGoal).not.toBeNull();
+    expect(updatedGoal!.channelId).toBeUndefined();
   });
 
   it("throws when settling a goal with no open channel", async () => {
@@ -188,9 +199,10 @@ describe("Goal progress", () => {
     await manager.executeDeposit(goal.id);
 
     const progress = manager.getGoalProgress(goal.id);
-    expect(progress.percentComplete).toBeCloseTo(25, 1);
-    expect(progress.savedAmount).toBe(50);
-    expect(progress.targetAmount).toBe(200);
+    expect(progress).not.toBeNull();
+    expect(progress!.percentComplete).toBeCloseTo(25, 1);
+    expect(progress!.savedAmount).toBe(50);
+    expect(progress!.targetAmount).toBe(200);
   });
 
   it("marks goal as completed when target is reached", async () => {
@@ -205,7 +217,8 @@ describe("Goal progress", () => {
     await manager.executeDeposit(goal.id);
 
     const completed = manager.getGoal(goal.id);
-    expect(completed.status).toBe("completed");
+    expect(completed).not.toBeNull();
+    expect(completed!.status).toBe("completed");
   });
 });
 
@@ -224,7 +237,8 @@ describe("Full end-to-end flow", () => {
 
     // 2. Open state channel
     const withChannel = await manager.openChannel(goal.id, "rParticipantXXX", 30);
-    expect(withChannel.channelId).toBeTruthy();
+    expect(withChannel).not.toBeNull();
+    expect(withChannel!.channelId).toBeTruthy();
 
     // 3. Set deposit rule
     manager.setDepositRule(goal.id, { amount: 2, frequency: "daily", active: true });
@@ -235,20 +249,24 @@ describe("Full end-to-end flow", () => {
     }
 
     const afterDeposits = manager.getGoal(goal.id);
-    expect(afterDeposits.savedAmount).toBe(10);
+    expect(afterDeposits).not.toBeNull();
+    expect(afterDeposits!.savedAmount).toBe(10);
 
     const history = manager.getDepositHistory(goal.id);
-    expect(history).toHaveLength(5);
-    expect(history.every((d) => d.type === "off_chain")).toBe(true);
+    expect(history).not.toBeNull();
+    expect(history!).toHaveLength(5);
+    expect(history!.every((d) => d.type === "off_chain")).toBe(true);
 
     // 5. Settle to XRPL
     const settlement = await manager.settleGoal(goal.id);
-    expect(settlement.type).toBe("settlement");
-    expect(settlement.txHash).toBeTruthy();
+    expect(settlement).not.toBeNull();
+    expect(settlement!.type).toBe("settlement");
+    expect(settlement!.txHash).toBeTruthy();
 
     // 6. Verify deposit history includes settlement
     const finalHistory = manager.getDepositHistory(goal.id);
-    expect(finalHistory).toHaveLength(6);
-    expect(finalHistory[5]?.type).toBe("settlement");
+    expect(finalHistory).not.toBeNull();
+    expect(finalHistory!).toHaveLength(6);
+    expect(finalHistory![5]?.type).toBe("settlement");
   });
 });

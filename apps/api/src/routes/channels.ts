@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { z } from "zod";
 import { goalManager } from "../lib/goal-manager-singleton.js";
+import { AgentWiseError } from "@agentwise/sdk";
 
 export const channelsRouter: IRouter = Router();
 
@@ -20,6 +21,9 @@ channelsRouter.post("/open", async (req, res, next) => {
       body.participantAddress,
       body.fundingAmount
     );
+    if (!goal) {
+      throw new AgentWiseError(`Goal ${body.goalId} not found`, "GOAL_NOT_FOUND");
+    }
     res.status(201).json({ channelId: goal.channelId, goal });
   } catch (err) {
     next(err);

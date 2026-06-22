@@ -5,6 +5,7 @@
 import { Router, type IRouter } from "express";
 import { z } from "zod";
 import { goalManager } from "../lib/goal-manager-singleton.js";
+import { AgentWiseError } from "@agentwise/sdk";
 
 export const agentRouter: IRouter = Router();
 
@@ -25,10 +26,16 @@ agentRouter.post("/top-up", async (req, res, next) => {
   try {
     const body = agentTopUpSchema.parse(req.body);
     const goal = goalManager.getGoal(body.goalId);
+    if (!goal) {
+      throw new AgentWiseError(`Goal ${body.goalId} not found`, "GOAL_NOT_FOUND");
+    }
 
     // If the goal has an open channel, execute a deposit
     if (goal.channelId && goal.depositRule) {
       const record = await goalManager.executeDeposit(body.goalId);
+      if (!record) {
+        throw new AgentWiseError(`Goal ${body.goalId} not found`, "GOAL_NOT_FOUND");
+      }
       res.json({
         action: "deposit_executed",
         deposit: record,
@@ -44,7 +51,7 @@ agentRouter.post("/top-up", async (req, res, next) => {
       );
       res.json({
         action: "channel_opened",
-        channelId: updatedGoal.channelId,
+        channelId: updatedGoal?.channelId,
         progress: goalManager.getGoalProgress(body.goalId),
       });
     } else {
@@ -64,6 +71,9 @@ agentRouter.get("/status/:goalId", (req, res, next) => {
   try {
     const progress = goalManager.getGoalProgress(req.params.goalId);
     const goal = goalManager.getGoal(req.params.goalId);
+    if (!goal || !progress) {
+      throw new AgentWiseError(`Goal ${req.params.goalId} not found`, "GOAL_NOT_FOUND");
+    }
     res.json({
       goal: { id: goal.id, name: goal.name, status: goal.status },
       progress,

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Green rounded background -->
+  <rect width="1024" height="1024" rx="220" ry="220" fill="#22C55E"/>
+
+  <!-- Shield outline (white) -->
+  <path d="M512 160 L720 240 L720 520 Q720 680 512 800 Q304 680 304 520 L304 240 Z"
+        fill="white" opacity="0.95"/>
+
+  <!-- Shield inner (green fill to show wallet on top) -->
+  <path d="M512 210 L680 278 L680 516 Q680 648 512 752 Q344 648 344 516 L344 278 Z"
+        fill="#22C55E"/>
+
+  <!-- Wallet body (white) -->
+  <rect x="360" y="390" width="300" height="220" rx="28" fill="white"/>
+
+  <!-- Wallet card slots at top -->
+  <rect x="390" y="350" width="115" height="22" rx="8" fill="white" transform="rotate(-18 447 361)"/>
+  <rect x="430" y="335" width="115" height="22" rx="8" fill="white" transform="rotate(-18 487 346)"/>
+
+  <!-- Wallet clasp / snap -->
+  <circle cx="640" cy="530" r="22" fill="#22C55E"/>
+  <circle cx="640" cy="530" r="12" fill="white"/>
+
+  <!-- Wallet bottom fold line -->
+  <rect x="360" y="565" width="300" height="12" rx="6" fill="#e8f5e9"/>
+
+  <!-- Orange sparkle / star top-right -->
+  <path d="M720 190
+           Q730 230 760 240
+           Q730 250 720 290
+           Q710 250 680 240
+           Q710 230 720 190 Z"
+        fill="#F97316"/>
+</svg>

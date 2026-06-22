@@ -8,10 +8,15 @@ export const metadata: Metadata = {
   description:
     "Automated goal-based micro-savings powered by Yellow state channels and XRPL. Built for Nigeria and Africa.",
   keywords: ["savings", "XRPL", "RLUSD", "DeFi", "Africa", "Nigeria", "AI agent"],
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: "/apple-icon.png",
+  },
   openGraph: {
-    title: "AgentWise",
-    description: "The Cowrywise for the agent economy",
+    title: "AgentWise — Non-Custodial Savings",
+    description: "The Cowrywise for the agent economy. Save in RLUSD with AI-powered automation.",
     type: "website",
+    images: [{ url: "/icon.svg", width: 1024, height: 1024, alt: "AgentWise" }],
   },
 };
 
