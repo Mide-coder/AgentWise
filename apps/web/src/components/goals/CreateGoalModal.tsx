@@ -7,12 +7,12 @@ import { X, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const GOAL_PRESETS = [
-  { name: "Emergency Fund", },
-  { name: "Travel",  },
-  { name: "Education", },
-  { name: "Business Capital", },
-  { name: "Rent",  },
-  { name: "Custom", },
+  { name: "Emergency Fund", label: "Emergency Fund", emoji: "🛡️" },
+  { name: "Travel",         label: "Travel",         emoji: "✈️" },
+  { name: "Education",      label: "Education",      emoji: "📚" },
+  { name: "Business",       label: "Business",       emoji: "💼" },
+  { name: "Rent",           label: "Rent",           emoji: "🏠" },
+  { name: "Custom",         label: "Custom",         emoji: "✏️" },
 ];
 
 interface CreateGoalModalProps {
@@ -104,16 +104,16 @@ export function CreateGoalModal({ onClose }: CreateGoalModalProps) {
       aria-modal="true"
       aria-label="Create savings goal"
     >
-      <div className="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden">
+      <div className="bg-white dark:bg-surface-800 rounded-3xl shadow-xl w-full max-w-md overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
+        <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-700">
           <div>
-            <h2 className="font-bold text-surface-900">Create a savings goal</h2>
+            <h2 className="font-bold text-surface-900 dark:text-slate-100">Create a savings goal</h2>
             <p className="text-xs text-slate-400 mt-0.5">Step {step} of 3</p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-xl hover:bg-slate-100 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center justify-center transition-colors"
             aria-label="Close modal"
           >
             <X className="w-4 h-4" />
@@ -132,13 +132,16 @@ export function CreateGoalModal({ onClose }: CreateGoalModalProps) {
                     key={preset.name}
                     type="button"
                     onClick={() => handlePresetSelect(preset.name)}
-                    className={`rounded-xl border py-2 px-3 text-xs font-medium transition-all ${
+                    className={`rounded-xl border py-2 px-3 text-xs font-medium transition-all text-center ${
                       selectedPreset === preset.name
-                        ? "border-brand-500 bg-brand-50 text-brand-700"
-                        : "border-slate-200 hover:border-slate-300"
+                        ? "border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300"
+                        : "border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 dark:text-slate-300"
                     }`}
                   >
-                    
+                    <span className="block text-xl mb-1" role="img" aria-label={preset.name}>
+                      {preset.emoji}
+                    </span>
+                    <span className="block">{preset.name}</span>
                   </button>
                 ))}
               </div>

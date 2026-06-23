@@ -11,14 +11,15 @@
   },
   "dependencies": {
     "@agentwise/sdk": "workspace:*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.395.0",
     "next": "^15.3.3",
+    "next-themes": "^0.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "xrpl": "^3.0.0",
     "recharts": "^2.15.0",
-    "lucide-react": "^0.395.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.3.0"
+    "tailwind-merge": "^2.3.0",
+    "xrpl": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

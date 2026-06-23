@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ConnectWalletButton } from "@/components/wallet/ConnectWalletButton";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { clsx } from "clsx";
 
 const navLinks = [
@@ -15,7 +16,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-slate-100">
+    <header className="sticky top-0 z-50 bg-white/80 dark:bg-surface-900/80 backdrop-blur border-b border-slate-100 dark:border-slate-800">
       <div className="container mx-auto max-w-5xl px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-xl">
@@ -48,8 +49,11 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Wallet */}
-        <ConnectWalletButton />
+        {/* Right side: theme toggle + wallet */}
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <ConnectWalletButton />
+        </div>
       </div>
     </header>
   );

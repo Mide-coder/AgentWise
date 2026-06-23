@@ -34,7 +34,7 @@ export default function RootLayout({
             <main className="flex-1 container mx-auto max-w-5xl px-4 py-8">
               {children}
             </main>
-            <footer className="border-t border-slate-100 py-6 text-center text-sm text-slate-400">
+            <footer className="border-t border-slate-100 dark:border-slate-800 py-6 text-center text-sm text-slate-400">
               AgentWise © 2026 · Built on XRPL + Yellow Nitrolite · Open Source
             </footer>
           </div>
