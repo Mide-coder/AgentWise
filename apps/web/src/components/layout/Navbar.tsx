@@ -28,7 +28,7 @@ export function Navbar() {
             className="rounded-xl"
             priority
           />
-          <span className="text-surface-900">AgentWise</span>
+          <span className="text-surface-900 dark:text-slate-100">AgentWise</span>
         </Link>
 
         {/* Nav links */}
@@ -41,7 +41,7 @@ export function Navbar() {
                 "text-sm font-medium transition-colors",
                 pathname === link.href
                   ? "text-brand-600"
-                  : "text-slate-500 hover:text-surface-900"
+                  : "text-slate-500 hover:text-surface-900 dark:hover:text-slate-100"
               )}
             >
               {link.label}

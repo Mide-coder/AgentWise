@@ -5,12 +5,12 @@ export function HeroSection() {
   return (
     <section className="text-center py-12 md:py-20">
       {/* Badge */}
-      <div className="inline-flex items-center gap-2 bg-brand-50 border border-brand-100 text-brand-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+      <div className="inline-flex items-center gap-2 bg-brand-50 dark:bg-brand-900 border border-brand-100 dark:border-brand-700 text-brand-700 dark:text-brand-100 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
         <Zap className="w-3 h-3" />
         Built on XRPL + Yellow Nitrolite State Channels
       </div>
 
-      <h1 className="text-4xl md:text-6xl font-bold text-surface-900 leading-tight mb-6">
+      <h1 className="text-4xl md:text-6xl font-bold text-surface-900 dark:text-slate-100 leading-tight mb-6">
         Save smarter.{" "}
         <span className="text-brand-600">Non-custodially.</span>
         <br />
@@ -43,7 +43,7 @@ export function HeroSection() {
       </div>
 
       {/* Trust badges */}
-      <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-slate-400">
+      <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-slate-500 dark:text-slate-400">
         <span>✅ Non-custodial</span>
         <span>✅ RLUSD stable value</span>
         <span>✅ Near-zero fees</span>
