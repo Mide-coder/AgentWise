@@ -34,6 +34,12 @@ export default function RootLayout({
         to avoid a flash of wrong theme.
       */}
       <body suppressHydrationWarning>
+        {/* Apply saved theme before first paint to avoid flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
         <Providers>
           <div className="min-h-screen flex flex-col bg-surface-50 dark:bg-surface-900 transition-colors duration-200">
             <Navbar />
